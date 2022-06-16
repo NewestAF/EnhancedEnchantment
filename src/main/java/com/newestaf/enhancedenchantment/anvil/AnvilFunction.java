@@ -1,4 +1,4 @@
 package com.newestaf.enhancedenchantment.anvil;
 
-public class AnvilFunction {
+public interface AnvilFunction {
 }
