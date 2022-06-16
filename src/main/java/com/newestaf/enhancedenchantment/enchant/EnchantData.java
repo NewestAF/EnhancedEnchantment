@@ -81,7 +81,8 @@ public class EnchantData implements WeightedRandom.Choice {
             @NotNull Enchantment enchantment,
             @NotNull EnchantRarity enchantRarity,
             @NotNull IntUnaryOperator min,
-            @NotNull IntUnaryOperator max) {
+            @NotNull IntUnaryOperator max
+    ) {
         EnchantData data = new EnchantData(enchantment, enchantRarity, min, max);
         ENCHANT_DATA.put(data.getEnchantment(), data);
     }
@@ -90,14 +91,16 @@ public class EnchantData implements WeightedRandom.Choice {
             @NotNull Enchantment enchantment,
             @NotNull EnchantRarity enchantRarity,
             @NotNull IntUnaryOperator min,
-            int maxMod) {
+            int maxMod
+    ) {
         add(enchantment, enchantRarity, min, level -> min.applyAsInt(level) + maxMod);
     }
 
     private static void add(
             @NotNull Enchantment enchantment,
             @NotNull EnchantRarity enchantRarity,
-            @NotNull IntUnaryOperator min) {
+            @NotNull IntUnaryOperator min
+    ) {
         add(enchantment, enchantRarity, min, 50);
     }
 
@@ -105,14 +108,16 @@ public class EnchantData implements WeightedRandom.Choice {
             @NotNull Enchantment enchantment,
             @NotNull EnchantRarity enchantRarity,
             int base,
-            int levelMod) {
+            int levelMod
+    ) {
         add(enchantment, enchantRarity, modLvl(base, levelMod), levelMod);
     }
 
     private static void addLoot(
             @NotNull Enchantment enchantment,
             @NotNull IntUnaryOperator min,
-            @NotNull IntUnaryOperator max) {
+            @NotNull IntUnaryOperator max
+    ) {
         add(enchantment, EnchantRarity.RARE, min, max);
     }
 
@@ -140,7 +145,8 @@ public class EnchantData implements WeightedRandom.Choice {
             @NotNull Enchantment enchantment,
             @NotNull EnchantRarity enchantRarity,
             @NotNull IntUnaryOperator minEnchantQuality,
-            @NotNull IntUnaryOperator maxEnchantQuality) {
+            @NotNull IntUnaryOperator maxEnchantQuality
+    ) {
         this.enchantment = enchantment;
         this.enchantRarity = enchantRarity;
         this.minCost = minEnchantQuality;

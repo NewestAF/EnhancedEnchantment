@@ -43,7 +43,8 @@ public final class EnchantDataReflection {
     private static IntUnaryOperator nmsIntUnaryOperator(
             Enchantment enchantment,
             String methodName,
-            IntUnaryOperator defaultOperator) {
+            IntUnaryOperator defaultOperator
+    ) {
         return nmsHandler(enchantment, nmsEnchant -> {
             Method method = nmsEnchant.getClass().getDeclaredMethod(methodName, int.class);
 
@@ -61,7 +62,8 @@ public final class EnchantDataReflection {
     private static <T> T nmsHandler(
             Enchantment enchantment,
             ThrowingFunction<Object, T, ReflectiveOperationException> function,
-            T defaultValue) {
+            T defaultValue
+    ) {
         try {
             Enchantment craftEnchant = Enchantment.getByKey(enchantment.getKey());
 

@@ -58,7 +58,8 @@ public record Enchantability(int value) {
 
     private static Enchantability addMaterial(
             Material material,
-            Enchantability enchantability) {
+            Enchantability enchantability
+    ) {
         BY_MATERIAL.put(material, enchantability);
         return enchantability;
 
@@ -67,14 +68,16 @@ public record Enchantability(int value) {
     private static Enchantability addMaterials(
             String materialName,
             String[] gearType,
-            int value) {
+            int value
+    ) {
         return addMaterials(materialName, gearType, new Enchantability(value));
     }
 
     private static Enchantability addMaterials(
             String materialName,
             String[] gearType,
-            Enchantability value) {
+            Enchantability value
+    ) {
         for (String toolType : gearType) {
             Material material = Material.getMaterial(materialName + toolType);
             if (material != null) {
@@ -83,6 +86,4 @@ public record Enchantability(int value) {
         }
         return value;
     }
-
-
 }

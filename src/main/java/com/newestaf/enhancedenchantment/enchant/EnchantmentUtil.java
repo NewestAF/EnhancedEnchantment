@@ -26,7 +26,8 @@ public final class EnchantmentUtil {
 
     public static void addEnchants(
             ItemMeta itemMeta,
-            Map<Enchantment, Integer> enchants) {
+            Map<Enchantment, Integer> enchants
+    ) {
         if (itemMeta == null) {
             return;
         }

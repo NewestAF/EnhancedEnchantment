@@ -35,7 +35,8 @@ public class EnchantingTable {
     }
 
     public void setIncompatibility(
-            BiPredicate<Enchantment, Enchantment> incompatibility) {
+            BiPredicate<Enchantment, Enchantment> incompatibility
+    ) {
         this.incompatibility = (e1, e2) -> e1.equals(e2) || incompatibility.test(e1, e2);
     }
 
@@ -67,7 +68,8 @@ public class EnchantingTable {
 
     public EnchantmentOffer getOffer(
             Random random,
-            int enchantLevel) {
+            int enchantLevel
+    ) {
         if (enchantLevel < 1) {
             return null;
         }
@@ -143,7 +145,8 @@ public class EnchantingTable {
     private void addEnchant(
             Random random,
             Map<Enchantment, Integer> selected,
-            Map<EnchantData, Integer> available) {
+            Map<EnchantData, Integer> available
+    ) {
         if (available.isEmpty()) {
             return;
         }
