@@ -1,0 +1,4 @@
+name: EnhancedEnchantment
+version: '${version}'
+main: com.newestaf.enhancedenchantment.EnhancedEnchantment
+api-version: 1.18
