@@ -1,2 +1,1 @@
 # EnhancedEnchantment
-test
