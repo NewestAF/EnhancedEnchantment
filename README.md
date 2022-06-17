@@ -1,1 +1,2 @@
 # EnhancedEnchantment
+test
