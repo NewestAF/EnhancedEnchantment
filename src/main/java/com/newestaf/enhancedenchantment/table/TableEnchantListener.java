@@ -34,17 +34,50 @@ public abstract class TableEnchantListener implements Listener {
     @EventHandler
     public final void onPreparedItemEnchant(PrepareItemEnchantEvent event) {
 
+        if (!isEnchantable(event.getEnchanter(), event.getItem())) {
+            return;
+        }
+
+        EnchantingTable table = getTable(event.getEnchanter(), event.getItem());
+        if (table == null) {
+            return;
+        }
+
+        random.setSeed(getSeed(event.getEnchanter(), 0));
+
+        int[] buttonLevels = EnchantingTable.getButtonLevels(random, event.getEnchantmentBonus());
+
+        for (int buttonIndex = 0; buttonIndex < buttonLevels.length; ++buttonIndex) {
+            random.setSeed(getSeed(event.getEnchanter(), buttonIndex));
+
+            event.getOffers()[buttonIndex] = table.getOffer(random, buttonLevels[buttonIndex]);
+        }
+
+        EnchantingTable.updateButtons(plugin, event.getEnchanter(), event.getOffers());
     }
 
     @EventHandler
     public final void onEnchantItem(EnchantItemEvent event) {
 
+        if (!isEnchantable(event.getEnchanter(), event.getItem())) {
+            return;
+        }
+
+        EnchantingTable table = getTable(event.getEnchanter(), event.getItem());
+        if (table == null) {
+            return;
+        }
+
+        random.setSeed(getSeed(event.getEnchanter(), event.whichButton()));
+
+        event.getEnchantsToAdd().putAll(table.apply(random, event.getExpLevelCost()));
+
     }
 
     protected boolean isEnchantable(Player player, ItemStack enchanted) {
         return enchanted.getAmount() == 1
-                || !isEligible(player, enchanted)
-                || enchanted.getEnchantments().isEmpty();
+                && isEligible(player, enchanted)
+                && enchanted.getEnchantments().isEmpty();
     }
 
     protected abstract boolean isEligible(Player player, ItemStack enchanted);
