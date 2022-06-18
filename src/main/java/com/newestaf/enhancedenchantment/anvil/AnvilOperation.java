@@ -1,7 +1,9 @@
 package com.newestaf.enhancedenchantment.anvil;
 
+import com.newestaf.enhancedenchantment.util.ItemUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.BiPredicate;
@@ -67,6 +69,41 @@ public class AnvilOperation {
 
     public void setCanCombineEnchant(BiPredicate<ItemStack, ItemStack> canCombineEnchant) {
         this.canCombineEnchant = canCombineEnchant;
+    }
+
+    public AnvilResult apply(AnvilInventory inventory) {
+        AnvilOperationState state = new AnvilOperationState(this, inventory);
+
+        if (ItemUtil.isEmpty(state.getBase().getItemStack())) {
+            return AnvilResult.EMPTY;
+        }
+
+        state.apply(AnvilFunction.PRIOR_WORK_LEVEL_COST);
+
+        if (ItemUtil.isEmpty(state.getAddition().getItemStack())) {
+            if (state.apply(AnvilFunction.RENAME)) {
+                state.setLevelCost(Math.min(state.getLevelCost(), state.getAnvilInventory().getMaximumRepairCost() - 1));
+            }
+
+            return state.forge();
+        }
+
+        if (state.getBase().getItemStack().getAmount() != 1) {
+            return AnvilResult.EMPTY;
+        }
+
+        state.apply(AnvilFunction.RENAME);
+
+        state.apply(AnvilFunction.UPDATE_PRIOR_WORK_COST);
+
+        if (!state.apply(AnvilFunction.REPAIR_WITH_MATERIAL)) {
+            state.apply(AnvilFunction.REPAIR_WITH_COMBINATION);
+        }
+
+        state.apply(AnvilFunction.COMBINE_ENCHANTMENTS_JAVA_EDITION);
+
+        return state.forge();
+
     }
 
 

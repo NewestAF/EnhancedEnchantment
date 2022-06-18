@@ -1,8 +1,10 @@
 package com.newestaf.enhancedenchantment.anvil;
 
+import com.newestaf.enhancedenchantment.util.ItemUtil;
 import com.newestaf.enhancedenchantment.util.MetaCachedStack;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.Repairable;
 
 public class AnvilOperationState {
 
@@ -51,7 +53,17 @@ public class AnvilOperationState {
     }
 
     public boolean apply(AnvilFunction function) {
+        if (function.canApply(this.operation, this)) {
+            return false;
+        }
 
+        AnvilFunctionResult anvilResult = function.getResult(this.operation, this);
+
+        anvilResult.modifyResult(this.result.getMeta());
+        this.levelCost += anvilResult.getLevelCostIncrease();
+        this.materialCost += anvilResult.getMaterialCostIncrease();
+
+        return true;
     }
 
     public AnvilResult forge() {
@@ -63,10 +75,27 @@ public class AnvilOperationState {
         }
 
         if (resultMeta == null) {
-            return  AnvilResult.EMPTY;
+            return AnvilResult.EMPTY;
         }
 
-        this.result
+        this.result.getItemStack().setItemMeta(resultMeta);
+
+        resultMeta = resultMeta.clone();
+
+        if (baseMeta instanceof Repairable baseRepairable
+                && resultMeta instanceof Repairable resultRepairable) {
+            resultRepairable.setRepairCost(baseRepairable.getRepairCost());
+        }
+
+        if (!ItemUtil.isEmpty(this.addition.getItemStack())) {
+            resultMeta.displayName(baseMeta.displayName());
+        }
+
+        if (baseMeta.equals(resultMeta)) {
+            return AnvilResult.EMPTY;
+        }
+
+        return new AnvilResult(this.result.getItemStack(), this.levelCost, this.materialCost);
 
     }
 
