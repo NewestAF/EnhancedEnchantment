@@ -136,7 +136,7 @@ public class EnchantingTable {
         enchantQuality = 1 + random.nextInt(enchantQuality);
         enchantQuality += enchantLevel;
 
-        float bonus = (random.nextFloat(2) - 1F) * 0.15F;
+        float bonus = (random.nextFloat() + random.nextFloat() - 1F) * 0.15F;
         enchantQuality = Math.round(enchantQuality + enchantQuality * bonus);
 
         return Math.max(1, enchantQuality);
@@ -185,7 +185,7 @@ public class EnchantingTable {
         try {
             Class<?> clazzRegistry = Class.forName("net.minecraft.core.IRegistry");
             // NMSREF net.minecraft.core.Registry#ENCHANTMENT
-            Object enchantmentRegistry = clazzRegistry.getDeclaredField("W").get(null);
+            Object enchantmentRegistry = clazzRegistry.getDeclaredField("X").get(null);
             // NMSREF net.minecraft.core.Registry#getId(java.lang.Object)
             Method methodRegistryGetId = clazzRegistry.getDeclaredMethod("a", Object.class);
 
